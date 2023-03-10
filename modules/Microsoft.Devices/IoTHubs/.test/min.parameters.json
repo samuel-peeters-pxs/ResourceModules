@@ -13,7 +13,7 @@
         },
         "tags": {
             "value": {
-                "applicationid": "sample-iot",
+                "applicationid": "sampleiot",
                 "costcenter": "555666",
                 "orderid": "Order-2020-05",
                 "environment": "sandbox"

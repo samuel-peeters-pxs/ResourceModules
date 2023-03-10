@@ -22,8 +22,8 @@ Initial version of Azure IoTHub resource with the following parameters enabled:
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleAssignments` | [2020-04-01-preview](https://docs.microsoft.com/en-us/azure/templates) |
-| `Microsoft.Devices/IotHubs` | [2021-07-02](https://docs.microsoft.com/en-us/azure/templates) |
+| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Devices/IotHubs` | [2021-07-02](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Devices/2021-07-02/IotHubs) |
 
 ## Parameters
 
@@ -38,7 +38,7 @@ Initial version of Azure IoTHub resource with the following parameters enabled:
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `d2cPartitions` | int | `2` |  | Integer. Partition count used for the event stream. Value between 2 and 128. |
-| `eventRetentionDays` | int | `1` |  | String. The amount of retention days of messages in event hub [events]. Default 1 day. |
+| `eventRetentionDays` | int | `1` |  | String. The amount of retention days of messages in event hub [ events ]. Default 1 day. |
 | `iotCloudToDeviceObject` | object | `{object}` |  | Object. Specify any c2d parameters for this IoTHub instance, like maxDeliveryCount, defaultTlsasIso8601, etc. |
 | `iotEnableFileUploadNotifications` | bool | `False` |  | Bool. Enable or Disable File upload Notifications. Default= false. |
 | `iotEventHubsObject` | array | `[]` |  | Array. EventHub  endpoint within this IoTHub instance. |
@@ -128,15 +128,15 @@ module IoTHubs './Microsoft.Devices/IoTHubs/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-IoTHubs'
   params: {
     // Required parameters
-    name: 'pxssptebu9'
+    name: 'minimalHub'
     // Non-required parameters
     iotSkuTier: 'S1'
     iotSkuUnits: 1
     tags: {
-      applicationid: 'dataengine'
-      costcenter: '502986'
-      environment: 's'
-      orderid: 'OID-21-05229'
+      applicationid: 'sampleiot'
+      costcenter: '555666'
+      environment: 'sandbox'
+      orderid: 'Order-2020-05'
     }
   }
 }
@@ -156,7 +156,7 @@ module IoTHubs './Microsoft.Devices/IoTHubs/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "pxssptebu9"
+      "value": "minimalHub"
     },
     // Non-required parameters
     "iotSkuTier": {
@@ -167,10 +167,10 @@ module IoTHubs './Microsoft.Devices/IoTHubs/deploy.bicep' = {
     },
     "tags": {
       "value": {
-        "applicationid": "dataengine",
-        "costcenter": "502986",
-        "environment": "s",
-        "orderid": "OID-21-05229"
+        "applicationid": "sampleiot",
+        "costcenter": "555666",
+        "environment": "sandbox",
+        "orderid": "Order-2020-05"
       }
     }
   }
@@ -191,7 +191,7 @@ module IoTHubs './Microsoft.Devices/IoTHubs/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-IoTHubs'
   params: {
     // Required parameters
-    name: 'pxssptd0Hub'
+    name: 'myuniqueHub'
     // Non-required parameters
     d2cPartitions: 2
     iotCloudToDeviceObject: {
@@ -253,8 +253,8 @@ module IoTHubs './Microsoft.Devices/IoTHubs/deploy.bicep' = {
         fileNameFormat: '{iothub}/{partition}/{YYYY}/{MM}/{DD}/{HH}/{mm}'
         maxChunkSizeInBytes: 104857600
         name: 'demoroute'
-        resourceGroup: 'pxs-cn-s-iothubs-rg'
-        subscriptionId: 'ea5a8e73-61cf-4a9e-ad0f-4de8563e5de9'
+        resourceGroup: 'validation-rg'
+        subscriptionId: '<<subscriptionId>>'
       }
       {
         authenticationType: 'identityBased'
@@ -265,16 +265,16 @@ module IoTHubs './Microsoft.Devices/IoTHubs/deploy.bicep' = {
         fileNameFormat: '{iothub}/{partition}/{YYYY}/{MM}/{DD}/{HH}/{mm}'
         maxChunkSizeInBytes: 104857600
         name: 'pnproute'
-        resourceGroup: 'pxs-cn-s-iothubs-rg'
-        subscriptionId: 'ea5a8e73-61cf-4a9e-ad0f-4de8563e5de9'
+        resourceGroup: 'validation-rg'
+        subscriptionId: '<<subscriptionId>>'
       }
     ]
     location: 'West Europe'
     tags: {
-      applicationid: 'dataengine'
-      costcenter: '502986'
-      environment: 's'
-      orderid: 'OID-21-05229'
+      applicationid: 'sampleiot'
+      costcenter: '555666'
+      environment: 'sandbox'
+      orderid: 'Order-2020-05'
     }
   }
 }
@@ -294,7 +294,7 @@ module IoTHubs './Microsoft.Devices/IoTHubs/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "pxssptd0Hub"
+      "value": "myuniqueHub"
     },
     // Non-required parameters
     "d2cPartitions": {
@@ -376,8 +376,8 @@ module IoTHubs './Microsoft.Devices/IoTHubs/deploy.bicep' = {
           "fileNameFormat": "{iothub}/{partition}/{YYYY}/{MM}/{DD}/{HH}/{mm}",
           "maxChunkSizeInBytes": 104857600,
           "name": "demoroute",
-          "resourceGroup": "pxs-cn-s-iothubs-rg",
-          "subscriptionId": "ea5a8e73-61cf-4a9e-ad0f-4de8563e5de9"
+          "resourceGroup": "validation-rg",
+          "subscriptionId": "<<subscriptionId>>"
         },
         {
           "authenticationType": "identityBased",
@@ -388,8 +388,8 @@ module IoTHubs './Microsoft.Devices/IoTHubs/deploy.bicep' = {
           "fileNameFormat": "{iothub}/{partition}/{YYYY}/{MM}/{DD}/{HH}/{mm}",
           "maxChunkSizeInBytes": 104857600,
           "name": "pnproute",
-          "resourceGroup": "pxs-cn-s-iothubs-rg",
-          "subscriptionId": "ea5a8e73-61cf-4a9e-ad0f-4de8563e5de9"
+          "resourceGroup": "validation-rg",
+          "subscriptionId": "<<subscriptionId>>"
         }
       ]
     },
@@ -398,10 +398,10 @@ module IoTHubs './Microsoft.Devices/IoTHubs/deploy.bicep' = {
     },
     "tags": {
       "value": {
-        "applicationid": "dataengine",
-        "costcenter": "502986",
-        "environment": "s",
-        "orderid": "OID-21-05229"
+        "applicationid": "sampleiot",
+        "costcenter": "555666",
+        "environment": "sandbox",
+        "orderid": "Order-2020-05"
       }
     }
   }
