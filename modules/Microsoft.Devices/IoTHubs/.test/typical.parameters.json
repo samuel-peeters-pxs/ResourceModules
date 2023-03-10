@@ -1,0 +1,116 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": "West Europe"
+        },
+        "name": {
+            "value": "pxssptd0Hub"
+        },
+        "iotSkuTier": {
+            "value": "S1"
+        },
+        "iotSkuUnits": {
+            "value": 1
+        },
+        "iotPublicAccess": {
+            "value": "Enabled"
+        },
+        "d2cPartitions": {
+            "value": 2
+        },
+        "iotStorageContainersObject": {
+            "value": [
+                {
+                    "authenticationType": "identityBased",
+                    "endpointUri": "https://pxssptssa1.blob.core.windows.net/",
+                    "containerName": "datademo",
+                    "fileNameFormat": "{iothub}/{partition}/{YYYY}/{MM}/{DD}/{HH}/{mm}",
+                    "encoding": "avro",
+                    "batchFrequencyInSeconds": 100,
+                    "maxChunkSizeInBytes": 104857600,
+                    "name": "demoroute",
+                    "resourceGroup": "validation-rg",
+                    "subscriptionId": "<<subscriptionId>>"
+                },
+                {
+                    "authenticationType": "identityBased",
+                    "endpointUri": "https://pxssptssa1.blob.core.windows.net/",
+                    "containerName": "iotplugandplay",
+                    "fileNameFormat": "{iothub}/{partition}/{YYYY}/{MM}/{DD}/{HH}/{mm}",
+                    "encoding": "avro",
+                    "batchFrequencyInSeconds": 100,
+                    "maxChunkSizeInBytes": 104857600,
+                    "name": "pnproute",
+                    "resourceGroup": "validation-rg",
+                    "subscriptionId": "<<subscriptionId>>"
+                }
+            ]
+        },
+        "iotRouteObject": {
+            "value": [
+                {
+                    "name": "DemoStorageRoute",
+                    "source": "DeviceMessages",
+                    "condition": "level = \"storage\"",
+                    "endpointNames": [
+                        "demoroute"
+                    ],
+                    "isEnabled": true
+                },
+                {
+                    "name": "IoTPnPRoute",
+                    "source": "DeviceMessages",
+                    "condition": null,
+                    "endpointNames": [
+                        "pnproute"
+                    ],
+                    "isEnabled": true
+                }
+            ]
+        },
+        "iotFallbackRouteObject": {
+            "value": {
+                "name": "$fallback",
+                "source": "DeviceMessages",
+                "condition": "true",
+                "endpointNames": [
+                    "events"
+                ],
+                "isEnabled": true
+            }
+        },
+        "iotMessagingEndpointsObject": {
+            "value": {
+                "fileNotifications": {
+                    "lockDurationAsIso8601": "PT1M",
+                    "ttlAsIso8601": "PT1H",
+                    "maxDeliveryCount": 100
+                }
+            }
+        },
+        "iotEnableFileUploadNotifications": {
+            "value": false
+        },
+        "iotCloudToDeviceObject": {
+            "value": {
+                "maxDeliveryCount": 10,
+                "defaultTtlAsIso8601": "PT1H",
+                "feedback": {
+                    "lockDurationAsIso8601": "PT1M",
+                    "ttlAsIso8601": "PT1H",
+                    "maxDeliveryCount": 10
+                }
+            }
+        },
+        "tags": {
+            "value": {
+                "applicationid": "dataengine",
+                "costcenter": "502986",
+                "orderid": "OID-21-05229",
+                "environment": "s"
+            }
+        }
+    }
+}
