@@ -22,8 +22,8 @@ Initial version of Azure IoTHub resource with the following parameters enabled:
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
-| `Microsoft.Devices/IotHubs` | [2021-07-02](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Devices/2021-07-02/IotHubs) |
+| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Devices/IotHubs` | [2021-07-02](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Devices/2021-07-02/IotHubs) |
 
 ## Parameters
 
@@ -38,21 +38,24 @@ Initial version of Azure IoTHub resource with the following parameters enabled:
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `d2cPartitions` | int | `2` |  | Integer. Partition count used for the event stream. Value between 2 and 128. |
+| `deviceSAS` | bool | `False` |  | Bool. Disable Device SAS Auth to this IoT Hub. Default value: false. |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `enableFileUploadNotifications` | bool | `False` |  | Bool. Enable or Disable File upload Notifications. Default= false. |
 | `eventRetentionDays` | int | `1` |  | String. The amount of retention days of messages in event hub [ events ]. Default 1 day. |
 | `iotCloudToDeviceObject` | object | `{object}` |  | Object. Specify any c2d parameters for this IoTHub instance, like maxDeliveryCount, defaultTlsasIso8601, etc. |
-| `iotEnableFileUploadNotifications` | bool | `False` |  | Bool. Enable or Disable File upload Notifications. Default= false. |
 | `iotEventHubsObject` | array | `[]` |  | Array. EventHub  endpoint within this IoTHub instance. |
 | `iotFallBackRouteObject` | object | `{object}` |  | Object. The Fallback Routing definition within this IoTHub instance. |
-| `iotLocalAuth` | bool | `False` |  | Bool. Allow or disallow Local Auth to this IoT Hub. Default value: false. |
 | `iotMessagingEndpointsObject` | object | `{object}` |  | Object. The Fallback Routing definition within this IoTHub instance. |
-| `iotPublicAccess` | string | `'Enabled'` | `[Disabled, disabled, Enabled, enabled]` | String. Enable or Disable public access to this IoT Hub. Default value: Enabled. |
 | `iotRouteObject` | array | `[]` |  | Array. The Routing definition(s) within this IoTHub instance. |
 | `iotServiceBusQueuesObject` | array | `[]` |  | Array. ServiceBusQueue  endpoint within this IoTHub instance. |
 | `iotServiceBusTopicsObject` | array | `[]` |  | Array. ServiceBusTopics  endpoint within this IoTHub instance. |
-| `iotSkuTier` | string | `'S1'` | `[B1, B2, B3, S1, S2, S3]` | String. The SKU to use for the IoT Hub. You can downsize the number of Units but not the Tier. Default value: S1. |
-| `iotSkuUnits` | int | `1` |  | Integer. The number of IoT Hub units within the chosen Tier. Do not exceed 4. Default value: 1. |
 | `iotStorageContainersObject` | array | `[]` |  | Array. StorageContainers endpoint within this IoTHub instance. |
+| `localAuth` | bool | `True` |  | Bool. Disable Local Auth to this IoT Hub. Default value: true. |
 | `location` | string | `[resourceGroup().location]` |  | String. The Location to use for the deployment. Default value is resourceGroup().location . |
+| `moduleSAS` | bool | `False` |  | Bool. Disable Module SAS Auth to this IoT Hub. Default value: false. |
+| `publicAccess` | string | `'Enabled'` | `[Disabled, disabled, Enabled, enabled]` | String. Enable or Disable public access to this IoT Hub. Default value: Enabled. |
+| `skuTier` | string | `'S1'` | `[B1, B2, B3, S1, S2, S3]` | String. The SKU to use for the IoT Hub. You can downsize the number of Units but not the Tier. Default value: S1. |
+| `skuUnits` | int | `1` |  | Integer. The number of IoT Hub units within the chosen Tier. Do not exceed 4. Default value: 1. |
 | `tags` | object | `{object}` |  | Tags of the IoTHub resource. |
 
 
@@ -95,6 +98,7 @@ tags: {
 ```
 
 </details>
+<p>
 
 ## Outputs
 
@@ -117,7 +121,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Min Test</h3>
+<h3>Example 1: Min</h3>
 
 <details>
 
@@ -128,15 +132,15 @@ module IoTHubs './Microsoft.Devices/IoTHubs/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-IoTHubs'
   params: {
     // Required parameters
-    name: 'minimalHub'
+    name: 'pxssptebu9'
     // Non-required parameters
-    iotSkuTier: 'S1'
-    iotSkuUnits: 1
+    skuTier: 'S1'
+    skuUnits: 1
     tags: {
-      applicationid: 'sampleiot'
-      costcenter: '555666'
-      environment: 'sandbox'
-      orderid: 'Order-2020-05'
+      applicationid: 'dataengine'
+      costcenter: '502986'
+      environment: 's'
+      orderid: 'OID-21-05229'
     }
   }
 }
@@ -156,21 +160,21 @@ module IoTHubs './Microsoft.Devices/IoTHubs/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "minimalHub"
+      "value": "pxssptebu9"
     },
     // Non-required parameters
-    "iotSkuTier": {
+    "skuTier": {
       "value": "S1"
     },
-    "iotSkuUnits": {
+    "skuUnits": {
       "value": 1
     },
     "tags": {
       "value": {
-        "applicationid": "sampleiot",
-        "costcenter": "555666",
-        "environment": "sandbox",
-        "orderid": "Order-2020-05"
+        "applicationid": "dataengine",
+        "costcenter": "502986",
+        "environment": "s",
+        "orderid": "OID-21-05229"
       }
     }
   }
@@ -180,7 +184,7 @@ module IoTHubs './Microsoft.Devices/IoTHubs/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 2: Typical Test</h3>
+<h3>Example 2: Typical</h3>
 
 <details>
 
@@ -191,9 +195,10 @@ module IoTHubs './Microsoft.Devices/IoTHubs/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-IoTHubs'
   params: {
     // Required parameters
-    name: 'myuniqueHub'
+    name: 'pxssptebu8'
     // Non-required parameters
     d2cPartitions: 2
+    enableFileUploadNotifications: false
     iotCloudToDeviceObject: {
       defaultTtlAsIso8601: 'PT1H'
       feedback: {
@@ -203,7 +208,6 @@ module IoTHubs './Microsoft.Devices/IoTHubs/deploy.bicep' = {
       }
       maxDeliveryCount: 10
     }
-    iotEnableFileUploadNotifications: false
     iotFallbackRouteObject: {
       condition: 'true'
       endpointNames: [
@@ -220,7 +224,6 @@ module IoTHubs './Microsoft.Devices/IoTHubs/deploy.bicep' = {
         ttlAsIso8601: 'PT1H'
       }
     }
-    iotPublicAccess: 'Enabled'
     iotRouteObject: [
       {
         condition: 'level = \'storage\''
@@ -241,15 +244,13 @@ module IoTHubs './Microsoft.Devices/IoTHubs/deploy.bicep' = {
         source: 'DeviceMessages'
       }
     ]
-    iotSkuTier: 'S1'
-    iotSkuUnits: 1
     iotStorageContainersObject: [
       {
         authenticationType: 'identityBased'
         batchFrequencyInSeconds: 100
         containerName: 'datademo'
         encoding: 'avro'
-        endpointUri: 'https://pxssptssa1.blob.core.windows.net/'
+        endpointUri: 'https://pxssptssa2.blob.core.windows.net/'
         fileNameFormat: '{iothub}/{partition}/{YYYY}/{MM}/{DD}/{HH}/{mm}'
         maxChunkSizeInBytes: 104857600
         name: 'demoroute'
@@ -261,7 +262,7 @@ module IoTHubs './Microsoft.Devices/IoTHubs/deploy.bicep' = {
         batchFrequencyInSeconds: 100
         containerName: 'iotplugandplay'
         encoding: 'avro'
-        endpointUri: 'https://pxssptssa1.blob.core.windows.net/'
+        endpointUri: 'https://pxssptssa2.blob.core.windows.net/'
         fileNameFormat: '{iothub}/{partition}/{YYYY}/{MM}/{DD}/{HH}/{mm}'
         maxChunkSizeInBytes: 104857600
         name: 'pnproute'
@@ -270,11 +271,14 @@ module IoTHubs './Microsoft.Devices/IoTHubs/deploy.bicep' = {
       }
     ]
     location: 'West Europe'
+    publicAccess: 'Enabled'
+    skuTier: 'S1'
+    skuUnits: 1
     tags: {
-      applicationid: 'sampleiot'
-      costcenter: '555666'
-      environment: 'sandbox'
-      orderid: 'Order-2020-05'
+      applicationid: 'dataengine'
+      costcenter: '502986'
+      environment: 's'
+      orderid: 'OID-21-05229'
     }
   }
 }
@@ -294,11 +298,14 @@ module IoTHubs './Microsoft.Devices/IoTHubs/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "myuniqueHub"
+      "value": "pxssptebu8"
     },
     // Non-required parameters
     "d2cPartitions": {
       "value": 2
+    },
+    "enableFileUploadNotifications": {
+      "value": false
     },
     "iotCloudToDeviceObject": {
       "value": {
@@ -310,9 +317,6 @@ module IoTHubs './Microsoft.Devices/IoTHubs/deploy.bicep' = {
         },
         "maxDeliveryCount": 10
       }
-    },
-    "iotEnableFileUploadNotifications": {
-      "value": false
     },
     "iotFallbackRouteObject": {
       "value": {
@@ -333,9 +337,6 @@ module IoTHubs './Microsoft.Devices/IoTHubs/deploy.bicep' = {
           "ttlAsIso8601": "PT1H"
         }
       }
-    },
-    "iotPublicAccess": {
-      "value": "Enabled"
     },
     "iotRouteObject": {
       "value": [
@@ -359,12 +360,6 @@ module IoTHubs './Microsoft.Devices/IoTHubs/deploy.bicep' = {
         }
       ]
     },
-    "iotSkuTier": {
-      "value": "S1"
-    },
-    "iotSkuUnits": {
-      "value": 1
-    },
     "iotStorageContainersObject": {
       "value": [
         {
@@ -372,7 +367,7 @@ module IoTHubs './Microsoft.Devices/IoTHubs/deploy.bicep' = {
           "batchFrequencyInSeconds": 100,
           "containerName": "datademo",
           "encoding": "avro",
-          "endpointUri": "https://pxssptssa1.blob.core.windows.net/",
+          "endpointUri": "https://pxssptssa2.blob.core.windows.net/",
           "fileNameFormat": "{iothub}/{partition}/{YYYY}/{MM}/{DD}/{HH}/{mm}",
           "maxChunkSizeInBytes": 104857600,
           "name": "demoroute",
@@ -384,7 +379,7 @@ module IoTHubs './Microsoft.Devices/IoTHubs/deploy.bicep' = {
           "batchFrequencyInSeconds": 100,
           "containerName": "iotplugandplay",
           "encoding": "avro",
-          "endpointUri": "https://pxssptssa1.blob.core.windows.net/",
+          "endpointUri": "https://pxssptssa2.blob.core.windows.net/",
           "fileNameFormat": "{iothub}/{partition}/{YYYY}/{MM}/{DD}/{HH}/{mm}",
           "maxChunkSizeInBytes": 104857600,
           "name": "pnproute",
@@ -396,12 +391,21 @@ module IoTHubs './Microsoft.Devices/IoTHubs/deploy.bicep' = {
     "location": {
       "value": "West Europe"
     },
+    "publicAccess": {
+      "value": "Enabled"
+    },
+    "skuTier": {
+      "value": "S1"
+    },
+    "skuUnits": {
+      "value": 1
+    },
     "tags": {
       "value": {
-        "applicationid": "sampleiot",
-        "costcenter": "555666",
-        "environment": "sandbox",
-        "orderid": "Order-2020-05"
+        "applicationid": "dataengine",
+        "costcenter": "502986",
+        "environment": "s",
+        "orderid": "OID-21-05229"
       }
     }
   }
@@ -409,3 +413,4 @@ module IoTHubs './Microsoft.Devices/IoTHubs/deploy.bicep' = {
 ```
 
 </details>
+<p>

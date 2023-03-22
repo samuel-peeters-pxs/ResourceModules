@@ -8,31 +8,37 @@ param location string = resourceGroup().location
 
 @description('Optional. String. The SKU to use for the IoT Hub. You can downsize the number of Units but not the Tier. Default value: S1.')
 @allowed([
-    'S1'
-    'S2'
-    'S3'
-    'B1'
-    'B2'
-    'B3'
+  'S1'
+  'S2'
+  'S3'
+  'B1'
+  'B2'
+  'B3'
 ])
-param iotSkuTier string = 'S1'
+param skuTier string = 'S1'
 
 @description('Optional. Integer. The number of IoT Hub units within the chosen Tier. Do not exceed 4. Default value: 1.')
 @minValue(1)
 @maxValue(4)
-param iotSkuUnits int = 1
+param skuUnits int = 1
 
 @description('Optional. String. Enable or Disable public access to this IoT Hub. Default value: Enabled.')
 @allowed([
-    'Enabled'
-		'enabled'
-		'Disabled'
-		'disabled'
+  'Enabled'
+  'enabled'
+  'Disabled'
+  'disabled'
 ])
-param iotPublicAccess string = 'Enabled'
+param publicAccess string = 'Enabled'
 
-@description('Optional. Bool. Allow or disallow Local Auth to this IoT Hub. Default value: false.')
-param iotLocalAuth bool = false
+@description('Optional. Bool. Disable Local Auth to this IoT Hub. Default value: true.')
+param disableLocalAuth bool = true
+
+@description('Optional. Bool. Disable Device SAS Auth to this IoT Hub. Default value: false.')
+param disableDeviceSAS bool = false
+
+@description('Optional. Bool. Disable Module SAS Auth to this IoT Hub. Default value: false.')
+param disableModuleSAS bool = false
 
 @description('Optional. Integer. Partition count used for the event stream. Value between 2 and 128.')
 @minValue(2)
@@ -64,7 +70,7 @@ param iotFallBackRouteObject object = {}
 param iotMessagingEndpointsObject object = {}
 
 @description('Optional. Bool. Enable or Disable File upload Notifications. Default= false.')
-param iotEnableFileUploadNotifications bool = false
+param enableFileUploadNotifications bool = false
 
 @description('Optional. Object. Specify any c2d parameters for this IoTHub instance, like maxDeliveryCount, defaultTlsasIso8601, etc.')
 param iotCloudToDeviceObject object = {}
@@ -72,7 +78,11 @@ param iotCloudToDeviceObject object = {}
 @description('Optional. Tags of the IoTHub resource.')
 param tags object = {}
 
-var enableFileUploadNotifications = empty(iotStorageContainersObject) ? false : iotEnableFileUploadNotifications
+// PID
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
+param enableDefaultTelemetry bool = true
+
+var iotEnableFileUploadNotifications = empty(iotStorageContainersObject) ? false : enableFileUploadNotifications
 var iotEmptyArrayObject = []
 var iotServiceBusQueuesVariable = empty(iotServiceBusQueuesObject) ? iotEmptyArrayObject : iotServiceBusQueuesObject
 var ioTserviceBusTopicsVariable = empty(iotServiceBusTopicsObject) ? iotEmptyArrayObject : iotServiceBusTopicsObject
@@ -99,14 +109,31 @@ var roleAssignments = [
   }
 ]
 
+var enableReferencedModulesTelemetry = false
+
+// ============ //
+// Dependencies //
+// ============ //
+resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+    }
+  }
+}
+
 module minimal_iothub '.bicep/minimal_iothub.bicep' = {
   name: '${uniqueString(deployment().name, location)}-minimalIoTHub-minimal-0'
   params: {
     name: ioTHubName
     location: location
-    iotSkuTier: iotSkuTier
-    iotSkuUnits: iotSkuUnits
-    iotPublicAccess: iotPublicAccess
+    iotSkuTier: skuTier
+    iotSkuUnits: skuUnits
+    iotPublicAccess: publicAccess
     d2cPartitions: d2cPartitions
     eventRetentionDays: eventRetentionDays
     tags: tags
@@ -118,7 +145,7 @@ module iothub_roleassignments '.bicep/nested_roleAssignments.bicep' = [for (role
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: [
-        minimal_iothub.outputs.principalId
+      minimal_iothub.outputs.principalId
     ]
     principalType: 'ServicePrincipal' // See https://docs.microsoft.com/azure/role-based-access-control/role-assignments-template#new-service-principal to understand why this property is included.
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
@@ -133,14 +160,14 @@ resource iothub 'Microsoft.Devices/IotHubs@2021-07-02' = {
   location: location
   tags: tags
   sku: {
-    capacity: iotSkuUnits
-    name: iotSkuTier
+    capacity: skuUnits
+    name: skuTier
   }
   properties: {
-    publicNetworkAccess: iotPublicAccess
-    disableLocalAuth: iotLocalAuth
-    disableDeviceSAS: true
-    disableModuleSAS: true
+    publicNetworkAccess: publicAccess
+    disableLocalAuth: disableLocalAuth
+    disableDeviceSAS: disableDeviceSAS
+    disableModuleSAS: disableModuleSAS
     eventHubEndpoints: {
       events: {
         retentionTimeInDays: eventRetentionDays
@@ -158,7 +185,7 @@ resource iothub 'Microsoft.Devices/IotHubs@2021-07-02' = {
       fallbackRoute: !empty(iotFallBackRouteObject) ? iotFallBackRouteObject : null
     }
     messagingEndpoints: iotMessagingEndpointsObject
-    enableFileUploadNotifications: enableFileUploadNotifications
+    enableFileUploadNotifications: iotEnableFileUploadNotifications
     cloudToDevice: iotCloudToDeviceObject
   }
   identity: {
