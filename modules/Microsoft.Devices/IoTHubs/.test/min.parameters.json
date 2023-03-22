@@ -3,19 +3,18 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "minimalHub"
+            "value": "3FdsdbxDe4f"
         },
-        "iotSkuTier": {
+        "skuTier": {
             "value": "S1"
         },
-        "iotSkuUnits": {
+        "skuUnits": {
             "value": 1
         },
         "tags": {
             "value": {
-                "applicationid": "sampleiot",
-                "costcenter": "555666",
-                "orderid": "Order-2020-05",
+                "applicationid": "iot",
+                "costcenter": "development",
                 "environment": "sandbox"
             }
         }

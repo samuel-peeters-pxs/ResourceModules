@@ -6,15 +6,15 @@
             "value": "West Europe"
         },
         "name": {
-            "value": "myuniqueHub"
+            "value": "3FdsdbxDe4f"
         },
-        "iotSkuTier": {
+        "skuTier": {
             "value": "S1"
         },
-        "iotSkuUnits": {
+        "skuUnits": {
             "value": 1
         },
-        "iotPublicAccess": {
+        "publicAccess": {
             "value": "Enabled"
         },
         "d2cPartitions": {
@@ -24,19 +24,7 @@
             "value": [
                 {
                     "authenticationType": "identityBased",
-                    "endpointUri": "https://pxssptssa1.blob.core.windows.net/",
-                    "containerName": "datademo",
-                    "fileNameFormat": "{iothub}/{partition}/{YYYY}/{MM}/{DD}/{HH}/{mm}",
-                    "encoding": "avro",
-                    "batchFrequencyInSeconds": 100,
-                    "maxChunkSizeInBytes": 104857600,
-                    "name": "demoroute",
-                    "resourceGroup": "validation-rg",
-                    "subscriptionId": "<<subscriptionId>>"
-                },
-                {
-                    "authenticationType": "identityBased",
-                    "endpointUri": "https://pxssptssa1.blob.core.windows.net/",
+                    "endpointUri": "https://3FdsdbxDe4f.blob.core.windows.net/",
                     "containerName": "iotplugandplay",
                     "fileNameFormat": "{iothub}/{partition}/{YYYY}/{MM}/{DD}/{HH}/{mm}",
                     "encoding": "avro",
@@ -50,15 +38,6 @@
         },
         "iotRouteObject": {
             "value": [
-                {
-                    "name": "DemoStorageRoute",
-                    "source": "DeviceMessages",
-                    "condition": "level = \"storage\"",
-                    "endpointNames": [
-                        "demoroute"
-                    ],
-                    "isEnabled": true
-                },
                 {
                     "name": "IoTPnPRoute",
                     "source": "DeviceMessages",
@@ -90,7 +69,7 @@
                 }
             }
         },
-        "iotEnableFileUploadNotifications": {
+        "enableFileUploadNotifications": {
             "value": false
         },
         "iotCloudToDeviceObject": {
@@ -106,9 +85,8 @@
         },
         "tags": {
             "value": {
-                "applicationid": "sampleiot",
-                "costcenter": "555666",
-                "orderid": "Order-2020-05",
+                "applicationid": "iot",
+                "costcenter": "development",
                 "environment": "sandbox"
             }
         }
